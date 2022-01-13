@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Start an Express application and implement a subset of tables: products, merchants, and affiliateRetailers.
+// These tables will have a simplified set of columns compared to our actual instance of Agora
+// The products table should have a productId and name
+// The merchants table should have an id, productId and buyUrl
+// The affiliateRetailers table should have an id and affiliateName
+// Write a migration that adds a price property to the merchants table
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  productId Int        @id @default(autoincrement())
+  name      String     @db.VarChar(255)
+  merchant  Merchant[]
+}
+
+model Merchant {
+  id                  Int                @id @default(autoincrement())
+  buyUrl              String
+  productId           Int?
+  product             Product?            @relation(fields: [productId], references: [productId])
+  affiliateRetailerId Int?
+  affiliateRetailer   AffiliateRetailer? @relation(fields: [affiliateRetailerId], references: [id])
+  price               Decimal?           @db.Decimal(8, 2)
+}
+
+model AffiliateRetailer {
+  id            Int        @id @default(autoincrement())
+  affiliateName String
+  merchant      Merchant[]
+}
