@@ -8,6 +8,7 @@ View docker-compose.yaml
 
 # VS Code
 Downloand the Prisma Extension
+
 Formatting Schema `npx prisma format` or use the VS Code Prisma extension (format on save feature)
 
 # Seed file
